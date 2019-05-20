@@ -10,6 +10,10 @@ class PdfScanner extends React.Component {
     return this.props.onPictureTaken(event.nativeEvent);
   }
 
+  sendOnProcessingEvent(event) {
+    return this.props.onProcessing(event.nativeEvent);
+  }
+
   sendOnRectanleDetectEvent(event) {
     if (!this.props.onRectangleDetect) return null;
     return this.props.onRectangleDetect(event.nativeEvent);
@@ -26,11 +30,17 @@ class PdfScanner extends React.Component {
     NativeModules.RNPdfScannerManager.capture();
   }
 
+  componentWillUnmount() {
+    console.log('unmout  camera')
+    NativeModules.RNPdfScannerManager.stopCamera()
+  }
+
   render() {
     return (
       <RNPdfScanner
         {...this.props}
         onPictureTaken={this.sendOnPictureTakenEvent.bind(this)}
+        onProcessing={this.sendOnProcessingEvent.bind(this)}
         onRectangleDetect={this.sendOnRectanleDetectEvent.bind(this)}
         useFrontCam={this.props.useFrontCam||false}
         brightness={this.props.brightness||0}
@@ -39,6 +49,7 @@ class PdfScanner extends React.Component {
         quality={this.getImageQuality()}
         detectionCountBeforeCapture={this.props.detectionCountBeforeCapture||5}
         detectionRefreshRateInMS={this.props.detectionRefreshRateInMS||50}
+        timeBetweenCaptures={this.props.timeBetweenCaptures||5}
       />
     );
   }
@@ -46,6 +57,7 @@ class PdfScanner extends React.Component {
 
 PdfScanner.propTypes = {
   onPictureTaken: PropTypes.func,
+  onProcessing: PropTypes.func,
   onRectangleDetect: PropTypes.func,
   overlayColor: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
   enableTorch: PropTypes.bool,
@@ -56,6 +68,7 @@ PdfScanner.propTypes = {
   detectionCountBeforeCapture: PropTypes.number,
   detectionRefreshRateInMS: PropTypes.number,
   quality: PropTypes.number,
+  timeBetweenCaptures: PropTypes.number,
 };
 
 export default PdfScanner;

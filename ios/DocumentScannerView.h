@@ -4,6 +4,7 @@
 @interface DocumentScannerView : IPDFCameraViewController <IPDFCameraViewControllerDelegate>
 
 @property (nonatomic, copy) RCTBubblingEventBlock onPictureTaken;
+@property (nonatomic, copy) RCTBubblingEventBlock onProcessing;
 @property (nonatomic, copy) RCTBubblingEventBlock onRectangleDetect;
 @property (nonatomic, assign) NSInteger detectionCountBeforeCapture;
 @property (assign, nonatomic) NSInteger stableCounter;
@@ -11,7 +12,10 @@
 @property (nonatomic, assign) BOOL useBase64;
 @property (nonatomic, assign) BOOL captureMultiple;
 @property (nonatomic, assign) BOOL saveInAppDocument;
+@property (copy, nonatomic, getter=getLastCapture, setter=setLastCapture:) NSDate * lastCapture;
+@property (nonatomic, assign) NSInteger timeBetweenCaptures;
 
 - (void) capture;
+- (void) stopCamera;
 
 @end
