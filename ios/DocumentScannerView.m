@@ -29,6 +29,9 @@
     }
 
     if (self.stableCounter > self.detectionCountBeforeCapture){
+        if (self.onProcessing) {
+            self.onProcessing(@{});
+        }
         if ([self.getLastCapture isEqualToDate:[self.getLastCapture earlierDate:[NSDate date]]] ) {
             [self capture];
         }
